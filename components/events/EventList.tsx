@@ -8,6 +8,7 @@ interface EventListProps {
 const EventList = ({ items }: EventListProps): JSX.Element => {
   return (
     <ul className={classes.list}>
+      {items.length === 0 && <p>No events found.</p>}
       {items.map(
         ({ id, title, date, location, image, isFeatured, description }) => (
           <EventItem

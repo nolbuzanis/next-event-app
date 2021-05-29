@@ -2,11 +2,25 @@ import Link from 'next/link';
 
 import classes from './Button.module.css';
 
-const Button = ({ children, link }): JSX.Element => {
+interface ButtonProps {
+  children: React.ReactNode;
+  link?: string;
+  onClick?: () => void;
+}
+
+const Button = ({ children, link, onClick }: ButtonProps): JSX.Element => {
+  if (link) {
+    return (
+      <Link href={link}>
+        <a className={classes.btn}>{children}</a>
+      </Link>
+    );
+  }
+
   return (
-    <Link href={link}>
-      <a className={classes.btn}>{children}</a>
-    </Link>
+    <button onClick={onClick} className={classes.btn}>
+      {children}
+    </button>
   );
 };
 
