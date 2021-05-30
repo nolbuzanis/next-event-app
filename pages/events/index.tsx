@@ -3,7 +3,7 @@ import { getFilteredEvents } from '../../dummy-data';
 import EventList from '../../components/events/EventList';
 import EventsSearch from '../../components/events/EventsSearch';
 import { GetStaticProps } from 'next';
-import axios from 'axios';
+import { getAllEvents } from '../../utils/api';
 
 interface EventsPageProps {
   events: EventItem[];
@@ -32,25 +32,18 @@ const EventsPage = (props: EventsPageProps): JSX.Element => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  try {
-    const { data } = await axios.get(
-      'https://nextjs-event-app-default-rtdb.firebaseio.com/events.json'
-    );
+  const events = await getAllEvents();
 
-    const parsedData = [];
-    for (const key in data) {
-      parsedData.push({ id: key, ...data[key] });
-    }
-
-    return {
-      props: {
-        events: parsedData,
-      },
-      revalidate: 30,
-    };
-  } catch (err) {
+  if ('error' in events) {
     return { notFound: true };
   }
+
+  const filteredEvents = events.filter((event) => event.isFeatured);
+  return {
+    props: {
+      events: filteredEvents,
+    },
+  };
 };
 
 export default EventsPage;

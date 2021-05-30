@@ -1,15 +1,12 @@
-import { getFeaturedEvents } from '../dummy-data';
 import EventList from '../components/events/EventList';
-import axios from 'axios';
 import { GetStaticProps } from 'next';
+import { getAllEvents } from '../utils/api';
 
 interface HomePageProps {
   events: EventItem[];
 }
 
 const HomePage = (props: HomePageProps): JSX.Element => {
-  // const featuredEvents = getFeaturedEvents();
-
   if (!props.events) return <div>loading...</div>;
 
   return (
@@ -20,25 +17,18 @@ const HomePage = (props: HomePageProps): JSX.Element => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  try {
-    const { data } = await axios.get(
-      'https://nextjs-event-app-default-rtdb.firebaseio.com/events.json'
-    );
-
-    const parsedData = [];
-    for (const key in data) {
-      if (data[key].isFeatured) parsedData.push({ id: key, ...data[key] });
-    }
-
+  const events = await getAllEvents();
+  if ('error' in events) {
     return {
-      props: {
-        events: parsedData,
-      },
-      revalidate: 30,
+      notFound: true,
     };
-  } catch (err) {
-    return { notFound: true };
   }
+
+  return {
+    props: {
+      events,
+    },
+  };
 };
 
 export default HomePage;
