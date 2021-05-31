@@ -8,7 +8,7 @@ export const getAllEvents = async (): Promise<EventItem[] | {error: unknown}> =>
 
     const parsedData = [];
     for (const key in data) {
-      if (data[key].isFeatured) parsedData.push({ id: key, ...data[key] });
+      parsedData.push({ id: key, ...data[key] });
     }
 
     return parsedData;
