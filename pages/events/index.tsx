@@ -38,10 +38,9 @@ export const getStaticProps: GetStaticProps = async () => {
     return { notFound: true };
   }
 
-  const filteredEvents = events.filter((event) => event.isFeatured);
   return {
     props: {
-      events: filteredEvents,
+      events,
     },
   };
 };

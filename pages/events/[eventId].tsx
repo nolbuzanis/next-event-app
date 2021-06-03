@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { getEventById } from '../../dummy-data';
 
 import EventSummary from '../../components/events/EventSummary';
 import EventLogistics from '../../components/events/EventLogistics';
@@ -68,7 +67,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     props: {
       event,
     },
-    revalidate: 1800,
+    revalidate: 60,
   };
 };
 

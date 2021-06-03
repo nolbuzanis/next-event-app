@@ -24,10 +24,13 @@ export const getStaticProps: GetStaticProps = async () => {
     };
   }
 
+  const filteredEvents = events.filter((event) => event.isFeatured);
+
   return {
     props: {
-      events,
+      events: filteredEvents,
     },
+    revalidate: 1800,
   };
 };
 
